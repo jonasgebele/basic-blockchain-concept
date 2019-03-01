@@ -1,26 +1,84 @@
 package home.in.tum.de;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 import com.google.gson.GsonBuilder;
 
 public class Blockchain {
 
-    private ArrayList<Block> BlockListe;
+    private ArrayList<Block> blockchain;
+
+    public static int difficulty = 4;
 
     public Blockchain(){
-        this.BlockListe = new ArrayList<>();
+        this.blockchain = new ArrayList<>();
     }
 
     public static void main(String[] args){
 
         Blockchain bitcoin = new Blockchain();
 
-        bitcoin.addBlock(bitcoin.createBlock("das ist der erste Block", "0"));
-        bitcoin.addBlock(bitcoin.createBlock("das ist der zweite Block", bitcoin.getPreviousBlockHash()));
-        bitcoin.addBlock(bitcoin.createBlock("das ist der dritte Block", bitcoin.getPreviousBlockHash()));
+        {
+            bitcoin.addBlock(bitcoin.createBlock("fill in data here", "0"));
+            System.out.println("Trying to Mine block 1...");
+            bitcoin.blockchain.get(0).mineBlock(difficulty);
 
-        String bitcoinJson = new GsonBuilder().setPrettyPrinting().create().toJson(bitcoin);
-        System.out.println(bitcoinJson);
+            System.out.println("\nThe block chain: ");
+
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            }
+            catch (Exception e){
+                System.exit(0);
+            }
+
+            String bitcoinJson = new GsonBuilder().setPrettyPrinting().create().toJson(bitcoin);
+            System.out.println(bitcoinJson);
+
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            }
+            catch (Exception e){
+                System.exit(0);
+            }
+        }
+
+        int i = 1;
+        while(true){
+            bitcoin.addBlock(bitcoin.createBlock("fill in data here", bitcoin.getPreviousBlockHash()));
+            System.out.println("Trying to Mine block " + Integer.toString(i+1) + "...");
+            bitcoin.blockchain.get(i).mineBlock(difficulty);
+            i++;
+
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            }
+            catch (Exception e){
+                System.exit(0);
+            }
+
+            System.out.println("\nBlockchain is Valid: " + bitcoin.isChainValid());
+
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            }
+            catch (Exception e){
+                System.exit(0);
+            }
+
+            System.out.println("\nThe block chain: ");
+
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            }
+            catch (Exception e){
+                System.exit(0);
+            }
+
+            String blockchainJson = new GsonBuilder().setPrettyPrinting().create().toJson(bitcoin);
+            System.out.println(blockchainJson);
+        }
+
     }
 
     private Block createBlock(String data, String previousBlockHash){
@@ -28,19 +86,38 @@ public class Blockchain {
     }
 
     private String getPreviousBlockHash () {
-        return this.BlockListe.get(BlockListe.size()-1).getHash();
+        return this.blockchain.get(blockchain.size()-1).hash;
     }
 
     private void addBlock (Block b) {
-        getBlockListe().add(b);
+        blockchain.add(b);
     }
 
-    public ArrayList<Block> getBlockListe() {
-        return BlockListe;
-    }
+    public Boolean isChainValid() {
+        Block currentBlock;
+        Block previousBlock;
+        String hashTarget = new String(new char[difficulty]).replace('\0', '0');
 
-    public void setBlockListe(ArrayList<Block> blockListe) {
-        BlockListe = blockListe;
+        //loop through blockchain to check hashes:
+        for(int i=1; i < blockchain.size(); i++) {
+            currentBlock = blockchain.get(i);
+            previousBlock = blockchain.get(i-1);
+            //compare registered hash and calculated hash:
+            if(!currentBlock.hash.equals(currentBlock.calculateHash()) ){
+                System.out.println("Current Hashes not equal");
+                return false;
+            }
+            //compare previous hash and registered previous hash
+            if(!previousBlock.hash.equals(currentBlock.previousHash) ) {
+                System.out.println("Previous Hashes not equal");
+                return false;
+            }
+            //check if hash is solved
+            if(!currentBlock.hash.substring( 0, difficulty).equals(hashTarget)) {
+                System.out.println("This block hasn't been mined");
+                return false;
+            }
+        }
+        return true;
     }
-
 }

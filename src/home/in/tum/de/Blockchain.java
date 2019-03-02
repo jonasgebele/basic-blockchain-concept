@@ -12,7 +12,6 @@ public class Blockchain {
     private static int difficulty = 4;
 
     public static void main(String[] args){
-
         Blockchain bitcoin = new Blockchain();
 
         bitcoin.addBlock(bitcoin.createBlock("Genesis Block", "0"));
@@ -47,14 +46,12 @@ public class Blockchain {
     }
 
     private Boolean isChainValid() {
-
         Block currentBlock;
         Block previousBlock;
         String hashTarget = new String(new char[difficulty]).replace('\0', '0');
 
         //go through the whole blockchain
         for(int i=1; i < blockchain.size(); i++) {
-
             currentBlock = blockchain.get(i);
             previousBlock = blockchain.get(i-1);
 
@@ -63,13 +60,11 @@ public class Blockchain {
                 System.out.println("Current Hashes not equal");
                 return false;
             }
-
             //compare previous hash and registered previous hash
             if(!previousBlock.getHash().equals(currentBlock.getPreviousHash()) ) {
                 System.out.println("Previous Hashes not equal");
                 return false;
             }
-
             //check if hash is solved
             if(!currentBlock.getHash().substring( 0, difficulty).equals(hashTarget)) {
                 System.out.println("This block hasn't been mined");

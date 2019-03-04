@@ -1,4 +1,4 @@
-package home.in.tum.de.transactions;
+package home.in.tum.de;
 
 import home.in.tum.de.cryptography.StringUtility;
 

@@ -1,6 +1,6 @@
-package home.in.tum.de.block;
+package home.in.tum.de;
 
-import home.in.tum.de.cryptography.StringUtility;
+import home.in.tum.de.StringUtility;
 import org.jetbrains.annotations.Contract;
 
 import java.util.Date;
@@ -13,7 +13,7 @@ public class Block {
     private long timeStamp;
     private int nonce;
 
-    Block (String data, String previousHash){
+    public Block (String data, String previousHash){
         this.data = data;
         this.previousHash = previousHash;
         this.timeStamp = new Date().getTime();

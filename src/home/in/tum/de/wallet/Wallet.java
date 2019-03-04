@@ -1,4 +1,4 @@
-package home.in.tum.de;
+package home.in.tum.de.wallet;
 
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;

@@ -1,6 +1,6 @@
 package home.in.tum.de.transactions;
 
-import home.in.tum.de.StringUtility;
+import home.in.tum.de.cryptography.StringUtility;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;

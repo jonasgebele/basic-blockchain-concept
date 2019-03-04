@@ -3,6 +3,7 @@ package home.in.tum.de;
 import java.util.ArrayList;
 
 import com.google.gson.GsonBuilder;
+import home.in.tum.de.block.Block;
 
 public class Blockchain {
 

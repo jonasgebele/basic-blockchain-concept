@@ -1,4 +1,6 @@
-package home.in.tum.de;
+package home.in.tum.de.transactions;
+
+import home.in.tum.de.cryptography.StringUtility;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -15,7 +17,7 @@ public class Transaction {
     private ArrayList<TransactionInput> inputs = new ArrayList<TransactionInput>();
     public ArrayList<TransactionOutput> outputs = new ArrayList<TransactionOutput>();
 
-    private static int sequence = 0; // a rough count of how many transaction have been generated
+    private static int transaction_counter = 0; // a rough count of how many transaction have been generated
 
     public Transaction (PublicKey from, PublicKey to, float value, ArrayList<TransactionInput> inputs){
         this.sender = from;
@@ -25,16 +27,16 @@ public class Transaction {
     }
 
     private String calculateHash() {
-        sequence++;
+        transaction_counter++;
         return StringUtility.applySHA256(
                 StringUtility.getStringFromKey(sender) +
                         StringUtility.getStringFromKey(reciepient) +
                         Float.toString(value) +
-                        sequence
+                        transaction_counter
         );
     }
 
-    // signs all the data we dont wish to tampered with
+    // signs all the data we do not wish to tampered with
     public void generateSignature(PrivateKey privateKey){
         String data = StringUtility.getStringFromKey(sender) + StringUtility.getStringFromKey(reciepient);
         signature = StringUtility.applyECDSASig(privateKey, data);

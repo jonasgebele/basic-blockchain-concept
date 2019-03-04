@@ -1,5 +1,6 @@
-package home.in.tum.de;
+package home.in.tum.de.block;
 
+import home.in.tum.de.cryptography.StringUtility;
 import org.jetbrains.annotations.Contract;
 
 import java.util.Date;

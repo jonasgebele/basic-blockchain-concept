@@ -1,4 +1,4 @@
-package home.in.tum.de;
+package home.in.tum.de.blockchain;
 
 import java.util.ArrayList;
 

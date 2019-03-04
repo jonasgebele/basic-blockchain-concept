@@ -1,11 +1,13 @@
 package home.in.tum.de.cryptography;
 
+import org.jetbrains.annotations.NotNull;
 import java.io.UnsupportedEncodingException;
 import java.security.*;
 import java.util.Base64;
 
 public class StringUtility {
 
+    @NotNull
     public static String applySHA256(String input) {
 
         try{

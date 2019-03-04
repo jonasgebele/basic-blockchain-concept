@@ -1,7 +1,5 @@
 package home.in.tum.de;
 
-import home.in.tum.de.cryptography.StringUtility;
-
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;

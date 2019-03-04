@@ -1,8 +1,6 @@
 package home.in.tum.de;
 
-import home.in.tum.de.StringUtility;
 import org.jetbrains.annotations.Contract;
-
 import java.util.Date;
 
 public class Block {

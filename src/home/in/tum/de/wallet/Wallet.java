@@ -1,18 +1,25 @@
 package home.in.tum.de.wallet;
 
+import home.in.tum.de.blockchain.Blockchain;
+import home.in.tum.de.transactions.TransactionOutput;
+
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Wallet {
 
     public PrivateKey privateKey;
     public PublicKey publicKey;
 
+    private HashMap<String, TransactionOutput> UTXOs = new HashMap<>();
+
     public Wallet () {
         generateKeyPair();
     }
 
-    public void generateKeyPair () {
+    private void generateKeyPair () {
         try{
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance("ECDSA", "BC");
             // returns a keyPairGenerator Objekt that can generate public and private keys
@@ -38,4 +45,24 @@ public class Wallet {
             throw new RuntimeException(e);
         }
     }
+
+    // returns balance and stores the UTXOs owned by this wallet in this.UTXOs
+    public float getBalance(){
+        float total = 0;
+        for(Map.Entry<String, TransactionOutput> item : Blockchain.UTXOs.entrySet()){
+            TransactionOutput UTXO = item.getValue();
+            if(UTXO.isMine(publicKey)){
+                UTXOs.put(UTXO.id, UTXO);
+                total += UTXO.value;
+            }
+        }
+        return total;
+    }
+
+    /*
+
+    Here will be sendsFunds Function
+
+     */
+
 }

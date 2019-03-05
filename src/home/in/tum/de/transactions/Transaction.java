@@ -2,6 +2,8 @@ package home.in.tum.de.transactions;
 
 import home.in.tum.de.blockchain.Blockchain;
 import home.in.tum.de.cryptography.StringUtility;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -27,6 +29,7 @@ public class Transaction {
         this.inputs = inputs;
     }
 
+    @NotNull
     private String calculateHash() {
         transaction_counter++;
         return StringUtility.applySHA256(
@@ -90,6 +93,7 @@ public class Transaction {
     }
 
     // returns sum of inputs (UTXOs) values
+    @Contract(pure = true)
     private float getInputsValue(){
         float total = 0;
         for(TransactionInput i : inputs){

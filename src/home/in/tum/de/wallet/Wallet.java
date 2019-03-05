@@ -64,5 +64,4 @@ public class Wallet {
     Here will be sendsFunds Function
 
      */
-
 }

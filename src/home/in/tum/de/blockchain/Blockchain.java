@@ -11,6 +11,7 @@ import home.in.tum.de.cryptography.StringUtility;
 import home.in.tum.de.transactions.Transaction;
 import home.in.tum.de.transactions.TransactionOutput;
 import home.in.tum.de.wallet.Wallet;
+import org.jetbrains.annotations.NotNull;
 
 public class Blockchain {
 
@@ -20,8 +21,8 @@ public class Blockchain {
 
     private static int difficulty = 4;
 
-    public static Wallet walletA;
-    public static Wallet walletB;
+    private static Wallet walletA;
+    private static Wallet walletB;
 
     public static void main(String[] args){
 
@@ -72,6 +73,7 @@ public class Blockchain {
         blockchain.add(b);
     }
 
+    @NotNull
     private Block createBlock(String data, String previousBlockHash){
         return new Block(data, previousBlockHash);
     }
@@ -80,6 +82,7 @@ public class Blockchain {
         return this.blockchain.get(blockchain.size()-1).getHash();
     }
 
+    @NotNull
     private Boolean isChainValid() {
         Block currentBlock;
         Block previousBlock;

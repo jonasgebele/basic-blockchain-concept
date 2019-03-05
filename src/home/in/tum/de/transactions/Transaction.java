@@ -1,5 +1,6 @@
 package home.in.tum.de.transactions;
 
+import home.in.tum.de.blockchain.Blockchain;
 import home.in.tum.de.cryptography.StringUtility;
 
 import java.security.PrivateKey;
@@ -46,5 +47,20 @@ public class Transaction {
     public boolean verifySignature(){
         String data = StringUtility.getStringFromKey(sender) + StringUtility.getStringFromKey(reciepient);
         return StringUtility.verifyECDSASig(sender, data, signature);
+    }
+
+    public boolean processTransaction () {
+        if(verifySignature() == false){
+            System.out.println("Transaction Signature failed to verify");
+            return false;
+        }
+
+        // gather transaction inputs (Make sure they are unspent)
+        for(TransactionInput i : inputs) {
+            i.UTXO = Blockchain.UTXOs.get(i.transactionOutputID);
+        }
+
+        // check if transaction is valid
+        if(getInputsValue() < Blockchain.minimumTransaction)
     }
 }

@@ -9,7 +9,6 @@ public class StringUtility {
 
     @NotNull
     public static String applySHA256(String input) {
-
         try{
             MessageDigest msgDigest = MessageDigest.getInstance("SHA-256");
             // MessageDigst provides secure one-way hash functions

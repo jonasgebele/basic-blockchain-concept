@@ -1,19 +1,53 @@
 package home.in.tum.de.blockchain;
 
+import java.security.Security;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.HashMap;
 
 import com.google.gson.GsonBuilder;
 import home.in.tum.de.block.Block;
+import home.in.tum.de.cryptography.StringUtility;
+import home.in.tum.de.transactions.Transaction;
+import home.in.tum.de.transactions.TransactionOutput;
+import home.in.tum.de.wallet.Wallet;
 
 public class Blockchain {
 
     private ArrayList<Block> blockchain = new ArrayList<>();
 
+    public static HashMap<String, TransactionOutput> UTXOs = new HashMap<>(); // List of unspend transactions
+
     private static int difficulty = 4;
 
+    public static Wallet walletA;
+    public static Wallet walletB;
+
     public static void main(String[] args){
+
         Blockchain bitcoin = new Blockchain();
 
+        //Setup Bouncey castle as a Security Provider
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+
+        // create two wallets
+        walletA = new Wallet();
+        walletB = new Wallet();
+
+        // test public and private keys
+        System.out.println("Private and public keys: ");
+        System.out.println(StringUtility.getStringFromKey(walletA.privateKey));
+        System.out.println(StringUtility.getStringFromKey(walletA.publicKey));
+
+        // create a test transaction from WalletA to WalletB
+        Transaction transaction = new Transaction(walletA.publicKey, walletB.publicKey, 5, null);
+        transaction.generateSignature(walletA.privateKey);
+
+        // verify the signature works and verify it from the public key
+        System.out.print("Is signature verified: " + transaction.verifySignature());
+
+
+        /*
         bitcoin.addBlock(bitcoin.createBlock("Genesis Block", "0"));
         System.out.println("Trying to Mine block 1...");
         bitcoin.blockchain.get(0).mineBlock(difficulty);
@@ -31,6 +65,7 @@ public class Blockchain {
         System.out.println("\nThe block chain: ");
         String BitcoinJsonFormat = new GsonBuilder().setPrettyPrinting().create().toJson(bitcoin);
         System.out.println(BitcoinJsonFormat);
+        */
     }
 
     private void addBlock (Block b) {

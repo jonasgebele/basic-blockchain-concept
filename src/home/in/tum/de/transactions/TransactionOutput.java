@@ -4,8 +4,10 @@ import home.in.tum.de.cryptography.StringUtility;
 
 import java.security.PublicKey;
 
-// transactionOutput will show the final amount sent to each party from the transaction. These act as the proof
-// that the coins have been send.
+/*
+show the amount relevant adresses recieved in the transaction
+the outputs are referenced as inputs in new transactions
+ */
 public class TransactionOutput {
 
     public String id;

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Transaction {
 
-    private String transactionID; // hash of the transaction
+    public String transactionID; // hash of the transaction
     private PublicKey sender; // public key of sender
     private PublicKey reciepient; // public key of reciever
     private float value; // value
@@ -53,6 +53,7 @@ public class Transaction {
     }
 
     public boolean processTransaction () {
+
         if(!verifySignature()){
             System.out.println("Transaction Signature failed to verify");
             return false;
@@ -87,13 +88,13 @@ public class Transaction {
             }
             Blockchain.UTXOs.remove(i.UTXO.id);
         }
-
         return true;
     }
 
     // returns sum of inputs (UTXOs) values
     @Contract(pure = true)
     private float getInputsValue(){
+
         float total = 0;
         for(TransactionInput i : inputs){
             if(i.UTXO == null) {

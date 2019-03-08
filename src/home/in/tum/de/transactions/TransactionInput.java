@@ -1,7 +1,8 @@
 package home.in.tum.de.transactions;
 
-// TransactionInput will reference TransactionOutputs that have not yet been spent. The transactionOutputID
-// will be used to find the relevant TransactionOutput, allowing miners to check the ownership
+/*
+references to previous transactions that prove the sender has funds to send
+ */
 public class TransactionInput {
 
     public String transactionOutputID; // reference to TranactionOutput -> TransactionID

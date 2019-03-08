@@ -1,10 +1,13 @@
 package home.in.tum.de.wallet;
 
 import home.in.tum.de.blockchain.Blockchain;
+import home.in.tum.de.transactions.Transaction;
+import home.in.tum.de.transactions.TransactionInput;
 import home.in.tum.de.transactions.TransactionOutput;
 
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,7 +61,35 @@ public class Wallet {
         return total;
     }
 
-    /*
-    Here will be sendsFunds Function
-     */
+    // generates and returns a new transaction from this wallet
+    public Transaction sendFunds (PublicKey _recipient, float value) {
+        if(getBalance() < value){
+            System.out.println("#Not enough funds to send transaction. Transaction Discarded.");
+            return null;
+        }
+
+        ArrayList<TransactionInput> inputs = new ArrayList<>();
+
+        float total = 0;
+
+        for (Map.Entry<String, TransactionOutput> item : UTXOs.entrySet()){
+            TransactionOutput UTXO = item.getValue();
+            total = total + UTXO.value;
+            inputs.add(new TransactionInput(UTXO.id));
+            if(total > value) {
+                break;
+            }
+        }
+
+        Transaction newTransaction = new Transaction(publicKey, _recipient, value, inputs);
+        newTransaction.generateSignature(privateKey);
+
+        for (TransactionInput input : inputs){
+            UTXOs.remove(input.transactionOutputID);
+        }
+
+        return newTransaction;
+    }
+
+
 }

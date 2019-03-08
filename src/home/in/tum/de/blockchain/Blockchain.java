@@ -19,14 +19,14 @@ public class Blockchain {
     private ArrayList<Block> blockchain = new ArrayList<>();
     public static HashMap<String, TransactionOutput> UTXOs = new HashMap<>(); // List of unspend transactions
 
-    private static int difficulty = 4;
+    private static int difficulty = 6;
 
     public static float minimumTransaction = 0.01f;
 
     private static Wallet walletA;
     private static Wallet walletB;
 
-    public static Transaction genesisTransaction;
+    private static Transaction genesisTransaction;
 
     public static void main(String[] args){
 

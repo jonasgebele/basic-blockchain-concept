@@ -65,8 +65,8 @@ public class Block {
 
     public void mineBlock(int difficulty) {
         merkleRoot = StringUtility.getMerkleRoot(transactions);
-        // String target = new String(new char[difficulty]).replace('\0', '0');
-        String target = StringUtility.getDifficultyString(difficulty);
+        String target = new String(new char[difficulty]).replace('\0', '0');
+        // String target = StringUtility.getDifficultyString(difficulty);
         while(!getHash().substring(0, difficulty).equals(target)){
             setNonce(getNonce()+1);
             setHash(calculateHash());

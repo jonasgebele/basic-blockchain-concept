@@ -16,13 +16,16 @@ import org.jetbrains.annotations.NotNull;
 public class Blockchain {
 
     private ArrayList<Block> blockchain = new ArrayList<>();
-
     public static HashMap<String, TransactionOutput> UTXOs = new HashMap<>(); // List of unspend transactions
 
     private static int difficulty = 4;
 
+    public static float minimumTransaction = 0.01f;
+
     private static Wallet walletA;
     private static Wallet walletB;
+
+    public Transaction genesisTransaction;
 
     public static void main(String[] args){
 

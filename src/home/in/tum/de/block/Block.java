@@ -2,6 +2,7 @@ package home.in.tum.de.block;
 
 import home.in.tum.de.cryptography.StringUtility;
 import home.in.tum.de.transactions.Transaction;
+
 import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class Block {
     private long timeStamp;
     private int nonce;
 
-    public Block (String data, String previousHash){
+    public Block (String previousHash){
         this.previousHash = previousHash;
         this.timeStamp = new Date().getTime();
         // important to calculate the hash after we set the other values

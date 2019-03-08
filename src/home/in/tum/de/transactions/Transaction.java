@@ -12,13 +12,13 @@ import java.util.ArrayList;
 public class Transaction {
 
     public String transactionID; // hash of the transaction
-    private PublicKey sender; // public key of sender
-    private PublicKey reciepient; // public key of reciever
-    private float value; // value
+    public PublicKey sender; // public key of sender
+    public PublicKey reciepient; // public key of reciever
+    public float value; // value
     private byte [] signature; // security signature
 
-    private ArrayList<TransactionInput> inputs = new ArrayList<>();
-    private ArrayList<TransactionOutput> outputs = new ArrayList<>();
+    public ArrayList<TransactionInput> inputs = new ArrayList<>();
+    public ArrayList<TransactionOutput> outputs = new ArrayList<>();
 
     private static int transaction_counter = 0;
 
@@ -93,7 +93,7 @@ public class Transaction {
 
     // returns sum of inputs (UTXOs) values
     @Contract(pure = true)
-    private float getInputsValue(){
+    public float getInputsValue(){
 
         float total = 0;
         for(TransactionInput i : inputs){

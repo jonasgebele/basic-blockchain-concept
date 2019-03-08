@@ -10,9 +10,8 @@ import java.util.Map;
 
 public class Wallet {
 
-    public PrivateKey privateKey;
     public PublicKey publicKey;
-
+    public PrivateKey privateKey;
     private HashMap<String, TransactionOutput> UTXOs = new HashMap<>();
 
     public Wallet () {
@@ -49,7 +48,7 @@ public class Wallet {
     // returns balance and stores the UTXOs owned by this wallet in this.UTXOs
     public float getBalance(){
         float total = 0;
-        for(Map.Entry<String, TransactionOutput> item : Blockchain.UTXOs.entrySet()){
+        for(HashMap.Entry<String, TransactionOutput> item : Blockchain.UTXOs.entrySet()){
             TransactionOutput UTXO = item.getValue();
             if(UTXO.isMine(publicKey)){
                 UTXOs.put(UTXO.id, UTXO);
@@ -60,8 +59,6 @@ public class Wallet {
     }
 
     /*
-
     Here will be sendsFunds Function
-
      */
 }

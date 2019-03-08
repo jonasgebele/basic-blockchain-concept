@@ -11,16 +11,16 @@ import java.util.ArrayList;
 
 public class Transaction {
 
-    private String transactionID; // this is also the hash of the transaction
-    private PublicKey sender;
-    private PublicKey reciepient;
-    private float value;
-    private byte [] signature; // this is to prevent anybody else from spending funds in our wallet
+    private String transactionID; // hash of the transaction
+    private PublicKey sender; // public key of sender
+    private PublicKey reciepient; // public key of reciever
+    private float value; // value
+    private byte [] signature; // security signature
 
     private ArrayList<TransactionInput> inputs = new ArrayList<>();
     private ArrayList<TransactionOutput> outputs = new ArrayList<>();
 
-    private static int transaction_counter = 0; // a rough count of how many transaction have been generated
+    private static int transaction_counter = 0;
 
     public Transaction (PublicKey from, PublicKey to, float value, ArrayList<TransactionInput> inputs){
         this.sender = from;
@@ -31,7 +31,7 @@ public class Transaction {
 
     @NotNull
     private String calculateHash() {
-        transaction_counter++;
+        transaction_counter++; // avoid that 2 identical transactions have the same hash value
         return StringUtility.applySHA256(
                 StringUtility.getStringFromKey(sender) +
                         StringUtility.getStringFromKey(reciepient) +
@@ -42,13 +42,13 @@ public class Transaction {
 
     // signs all the data we do not wish to tampered with
     public void generateSignature(PrivateKey privateKey){
-        String data = StringUtility.getStringFromKey(sender) + StringUtility.getStringFromKey(reciepient);
+        String data = StringUtility.getStringFromKey(sender) + StringUtility.getStringFromKey(reciepient) + Float.toString(value);
         signature = StringUtility.applyECDSASig(privateKey, data);
     }
 
     // verifies the data we signed hasnt been tampered with
     public boolean verifySignature(){
-        String data = StringUtility.getStringFromKey(sender) + StringUtility.getStringFromKey(reciepient);
+        String data = StringUtility.getStringFromKey(sender) + StringUtility.getStringFromKey(reciepient) + Float.toString(value);
         return StringUtility.verifyECDSASig(sender, data, signature);
     }
 
@@ -59,15 +59,14 @@ public class Transaction {
         }
 
         // gather transaction inputs (Make sure they are unspent)
-        for(TransactionInput i : inputs) {
-            i.UTXO = Blockchain.UTXOs.get(i.transactionOutputID);
+        for(TransactionInput input : inputs) {
+            input.UTXO = Blockchain.UTXOs.get(input.transactionOutputID);
         }
 
-        // check if transaction is valid
         if(getInputsValue() < Blockchain.minimumTransaction){
             System.out.println("#Transaction Inputs to small: " + getInputsValue());
+            return false;
         }
-        return false;
 
         // generate transaction outputs
         float leftOver = getInputsValue() - value;
@@ -101,7 +100,7 @@ public class Transaction {
                 continue;
                 // if transaction can not be found, skip it
             }
-            total += i.UTXO.value;
+            total = total +  i.UTXO.value;
         }
         return total;
     }
@@ -110,7 +109,7 @@ public class Transaction {
     public float getOutputsValue(){
         float total = 0;
         for (TransactionOutput o : outputs){
-            total += o.value;
+            total = total + o.value;
         }
         return total;
     }
